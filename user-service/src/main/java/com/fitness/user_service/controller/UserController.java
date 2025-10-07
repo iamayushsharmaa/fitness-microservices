@@ -4,7 +4,6 @@ import com.fitness.user_service.dto.RegisterRequest;
 import com.fitness.user_service.dto.UserResponse;
 import com.fitness.user_service.service.UserService;
 import jakarta.validation.Valid;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +23,11 @@ public class UserController {
     @GetMapping("/register")
     public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(userService.register(request));
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<Boolean> validateUser(@PathVariable String userId) {
+        return ResponseEntity.ok(userService.existByUserId(userId));
     }
 
 
