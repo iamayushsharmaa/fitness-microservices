@@ -5,6 +5,8 @@ import com.fitness.activity_service.dto.ActivityResponse;
 import com.fitness.activity_service.model.Activity;
 import com.fitness.activity_service.repository.ActivityRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,6 +15,10 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
     private final UserValidationService userValidationService;
+    private final KafkaTemplate<String, Activity> kafkaTemplate;
+
+    @Value("${kafka.topic.name}")
+    private String topicName;
 
     public ActivityResponse trackActivity(ActivityRequest request) {
 
@@ -32,6 +38,13 @@ public class ActivityService {
                 .build();
 
         Activity savedActivity = activityRepository.save(activity);
+
+        try {
+            kafkaTemplate.send(topicName, savedActivity.getUserId(), savedActivity);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return mapToResponse(savedActivity);
     }
 
