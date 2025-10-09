@@ -1,4 +1,4 @@
-package com.fitness.user_service.dto;
+package com.fitness.api_gateway.user;
 
 import lombok.Data;
 
@@ -15,3 +15,4 @@ public class UserResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
+

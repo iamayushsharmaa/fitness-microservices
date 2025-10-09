@@ -1,4 +1,4 @@
-package com.fitness.user_service.dto;
+package com.fitness.api_gateway.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -19,3 +19,4 @@ public class RegisterRequest {
     private String lastName;
 
 }
+
