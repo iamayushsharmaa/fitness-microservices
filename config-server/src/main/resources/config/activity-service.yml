@@ -1,8 +1,4 @@
 spring:
-  application:
-    name: activity-service
-  config:
-    import: optional:config-server:http//localhost:8888
   data:
     mongodb:
       uri: mongo://localhost:27017/aiactivityfitness
