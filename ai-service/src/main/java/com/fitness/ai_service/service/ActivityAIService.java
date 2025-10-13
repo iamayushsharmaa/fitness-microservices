@@ -5,11 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitness.ai_service.model.Activity;
 import com.fitness.ai_service.model.Recommendation;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,7 +24,6 @@ public class ActivityAIService {
     public Recommendation generateRecommendation(Activity activity) {
         String prompt = createPromptForActivity(activity);
         String aiResponse = geminiService.getRecommendation(prompt);
-        log.info("Response from AI {}", aiResponse);
 
         return processAIResponse(activity, aiResponse);
     }
@@ -107,6 +102,7 @@ public class ActivityAIService {
 
     private List<String> extractSuggestions(JsonNode suggestionsNode) {
         List<String> suggestions = new ArrayList<>();
+
         if (suggestionsNode.isArray()) {
             suggestionsNode.forEach(suggestion -> {
                 String workout = suggestion.path("workout").asText();
@@ -114,6 +110,7 @@ public class ActivityAIService {
                 suggestions.add(String.format("%s: %s", workout, description));
             });
         }
+
         return suggestions.isEmpty() ?
                 Collections.singletonList("No specific suggestions provided")
                 : suggestions;
@@ -122,6 +119,7 @@ public class ActivityAIService {
 
     private List<String> extractImprovements(JsonNode improvementsNode) {
         List<String> improvements = new ArrayList<>();
+
         if (improvementsNode.isArray()) {
             improvementsNode.forEach(improvement -> {
                 String area = improvement.path("area").asText();
@@ -129,6 +127,7 @@ public class ActivityAIService {
                 improvements.add(String.format("%s: %s", area, detail));
             });
         }
+
         return improvements.isEmpty() ?
                 Collections.singletonList("No specific improvement provided")
                 : improvements;
